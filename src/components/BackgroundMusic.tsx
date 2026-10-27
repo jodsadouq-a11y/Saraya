@@ -24,7 +24,7 @@ const writePref = (v: 'on' | 'off') => {
 /**
  * Looping background music. Starts by itself where the browser allows it;
  * otherwise on the visitor's first tap, click or key press anywhere on the page.
- * A floating button turns it on and off, and the choice is remembered.
+ * A floating button turns it on and off, with an animated audio visualizer.
  */
 export default function BackgroundMusic() {
   const music = site.music;
@@ -134,8 +134,8 @@ export default function BackgroundMusic() {
         className={`music-toggle ${playing ? 'is-playing' : ''} ${waiting && !playing ? 'is-waiting' : ''}`}
         onClick={toggle}
         aria-pressed={playing}
-        aria-label={playing ? 'إيقاف الموسيقى' : 'تشغيل الموسيقى'}
-        title={playing ? 'إيقاف الموسيقى' : 'تشغيل الموسيقى'}
+        aria-label={playing ? 'إيقاف المقطوعة الملكية' : 'تشغيل المقطوعة الملكية'}
+        title={playing ? 'إيقاف المقطوعة الملكية' : 'تشغيل المقطوعة الملكية'}
       >
         <span className="music-toggle__bars" aria-hidden="true">
           <i />
@@ -149,7 +149,7 @@ export default function BackgroundMusic() {
           <circle cx="16.5" cy="16" r="2.5" />
         </svg>
         <span className="music-toggle__hint" aria-hidden="true">
-          اضغطوا لتشغيل الموسيقى
+          {playing ? 'مقطوعة سرايا شيرين الملكية 🎵' : 'اضغطوا لتشغيل الموسيقى'}
         </span>
       </button>
     </>

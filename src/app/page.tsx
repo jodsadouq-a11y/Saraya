@@ -6,6 +6,7 @@ import Hero from '@/components/Hero';
 import Story from '@/components/Story';
 import Halls from '@/components/Halls';
 import Gallery from '@/components/Gallery';
+import VideoReels from '@/components/VideoReels';
 import Services from '@/components/Services';
 import About from '@/components/About';
 import Pause from '@/components/Pause';
@@ -26,6 +27,7 @@ export default function Home() {
         <Story />
         <Halls />
         <Gallery />
+        <VideoReels />
         <Services />
         <About />
         <Pause />

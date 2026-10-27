@@ -234,7 +234,12 @@ export default function Booking() {
                 <div className="field">
                   <label htmlFor="f-date">التاريخ المفضّل <span aria-hidden="true">*</span></label>
                   <input type="date" min={minDate} required {...a11y('date', true)} />
-                  <p className="field__hint" id="h-date">نتحقّق من التوفّر ونؤكّده معكم.</p>
+                  <p className="field__hint" id="h-date">
+                    نتحقّق من التوفّر ونؤكّده معكم.
+                    <span style={{ display: 'block', color: '#D4AF37', marginTop: '0.25rem', fontSize: '0.8rem' }}>
+                      ⚡ مواعيد عطلات نهاية الأسبوع وموسم الصيف تشهد إقبالاً متسارعاً — ننصح بالحجز المسبق لضمان التاريخ.
+                    </span>
+                  </p>
                   {err('date')}
                 </div>
               </div>

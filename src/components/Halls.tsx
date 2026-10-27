@@ -5,7 +5,8 @@ import { halls } from '@/content/site';
 import { getGsap, MQ, useDeferredScene } from '@/lib/motion';
 import Media from './Media';
 import Lightbox from './Lightbox';
-
+import PanoramaViewer from './PanoramaViewer';
+import EventEstimator from './EventEstimator';
 import { INQUIRE_EVENT } from '@/lib/events';
 
 export default function Halls() {
@@ -13,6 +14,7 @@ export default function Halls() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [current, setCurrent] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [panorama, setPanorama] = useState<string | null>(null);
   const hall = halls[current];
 
   useDeferredScene((mm) => {
@@ -27,8 +29,8 @@ export default function Halls() {
     }, root);
   }, [current]);
 
-  const inquire = () => {
-    window.dispatchEvent(new CustomEvent(INQUIRE_EVENT, { detail: { hall: hall.name } }));
+  const inquire = (customHallName?: string) => {
+    window.dispatchEvent(new CustomEvent(INQUIRE_EVENT, { detail: { hall: customHallName || hall.name } }));
     dialog.current?.close();
     document.getElementById('booking')?.scrollIntoView({ behavior: window.matchMedia(MQ.reduce).matches ? 'auto' : 'smooth' });
   };
@@ -107,11 +109,19 @@ export default function Halls() {
               )}
             </dl>
 
-            <div className="hall__actions">
+            <div className="hall__actions" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
               <button type="button" className="btn btn--plum" onClick={() => dialog.current?.showModal()}>
                 شاهدي التفاصيل
               </button>
-              <button type="button" className="btn btn--line" onClick={inquire} data-magnetic>
+              <button
+                type="button"
+                className="btn btn--gold"
+                onClick={() => setPanorama(hall.cover.src ?? '/media/photos/hall-warm-1920.webp')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <span>🔄 جولة 360° تفاعلية</span>
+              </button>
+              <button type="button" className="btn btn--line" onClick={() => inquire()} data-magnetic>
                 استفسري عن الحجز
               </button>
             </div>
@@ -129,6 +139,9 @@ export default function Halls() {
             )}
           </div>
         </article>
+
+        {/* Smart Event Estimator */}
+        <EventEstimator onSelectHall={(selectedHall) => inquire(selectedHall)} />
       </div>
 
       <dialog ref={dialog} className="hall-dialog" aria-labelledby="hall-dialog-title" onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}>
@@ -140,32 +153,36 @@ export default function Halls() {
             <Media item={hall.cover} sizes="(min-width: 900px) 70vw, 100vw" />
           </div>
           <div className="hall-dialog__body">
-            {hall.nameLatin && <p className="hall__latin latin">{hall.nameLatin}</p>}
             <h3 id="hall-dialog-title" className="display">{hall.name}</h3>
-            <p>{hall.description}</p>
-            {hall.capacity && <p className="hall-dialog__fact">السعة: {hall.capacity}</p>}
-            {hall.features.length > 0 && (
-              <ul className="hall__features">
-                {hall.features.map((f) => (
-                  <li key={f}>{f}</li>
-                ))}
-              </ul>
-            )}
-            <div className="hall-dialog__grid">
-              {hall.gallery.map((g, i) => (
-                <button key={g.id} type="button" onClick={() => setLightbox(i)} aria-label={`عرض: ${g.alt}`}>
-                  <Media item={g} badge={false} sizes="(min-width: 900px) 25vw, 50vw" />
-                </button>
-              ))}
+            <p className="hall-dialog__lead">{hall.description}</p>
+            <div className="hall-dialog__actions">
+              <button
+                type="button"
+                className="btn btn--gold"
+                onClick={() => {
+                  dialog.current?.close();
+                  setPanorama(hall.cover.src ?? '/media/photos/hall-warm-1920.webp');
+                }}
+              >
+                جولة 360° داخل القاعة
+              </button>
+              <button type="button" className="btn btn--plum" onClick={() => inquire()}>
+                احجزي هذه القاعة لمناسبتك
+              </button>
             </div>
-            <button type="button" className="btn btn--gold" onClick={inquire}>
-              استفسري عن الحجز
-            </button>
           </div>
         </div>
       </dialog>
 
       <Lightbox items={hall.gallery} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} label={`صور ${hall.name}`} />
+
+      {panorama && (
+        <PanoramaViewer
+          imageSrc={panorama}
+          title={hall.name}
+          onClose={() => setPanorama(null)}
+        />
+      )}
     </section>
   );
 }
