@@ -1,5 +1,5 @@
 import { brand, contact } from '@/content/site';
-import Emblem from './Emblem';
+import AnimatedLogo from './AnimatedLogo';
 
 export default function About() {
   return (
@@ -11,7 +11,7 @@ export default function About() {
             <circle cx="200" cy="200" r="160" strokeDasharray="2 8" />
             <path d="M200 10 L200 40 M200 360 L200 390 M10 200 L40 200 M360 200 L390 200" />
           </svg>
-          <Emblem size={200} />
+          <AnimatedLogo size={220} tilt />
         </div>
         <div className="about__body" data-reveal>
           <p className="eyebrow">عن سرايا شيرين</p>

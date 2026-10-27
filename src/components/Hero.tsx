@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { brand, media } from '@/content/site';
 import { getGsap, MQ, useDeferredScene } from '@/lib/motion';
 import Media from './Media';
-import Emblem from './Emblem';
+import AnimatedLogo from './AnimatedLogo';
 import Particles from './Particles';
 
 export default function Hero() {
@@ -70,15 +70,8 @@ export default function Hero() {
               ))}
             </g>
           </svg>
-          <svg className="hero__crown" viewBox="0 0 60 30" aria-hidden="true">
-            <path d="M6 26 L9 8 L20 18 L30 2 L40 18 L51 8 L54 26 Z" />
-            <circle cx="9" cy="6" r="2" />
-            <circle cx="30" cy="1.5" r="1.5" />
-            <circle cx="51" cy="6" r="2" />
-          </svg>
           <div className="hero__logo">
-            <Emblem size={220} title={`شعار ${brand.nameAr}`} />
-            <span className="hero__sheen" aria-hidden="true" />
+            <AnimatedLogo size={240} tilt />
           </div>
         </div>
 

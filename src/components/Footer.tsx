@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { brand, contact, whatsappLink } from '@/content/site';
 import { getGsap, MQ, useDeferredScene } from '@/lib/motion';
-import Emblem from './Emblem';
+import AnimatedLogo from './AnimatedLogo';
 
 const prng = (s: number) => () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
 const STARS = (() => {
@@ -63,7 +63,7 @@ export default function Footer() {
             ))}
           </svg>
           <div className="finale__logo">
-            <Emblem size={180} />
+            <AnimatedLogo size={200} tilt />
           </div>
         </div>
 

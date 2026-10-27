@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { brand, contact, nav, whatsappLink } from '@/content/site';
-import Emblem from './Emblem';
+import AnimatedLogo from './AnimatedLogo';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -59,7 +59,7 @@ export default function Header() {
     <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
       <div className="site-header__bar">
         <a href="#top" className="site-header__brand" aria-label={`${brand.nameAr} — الرئيسية`}>
-          <Emblem size={44} title={brand.nameAr} />
+          <AnimatedLogo size={88} compact />
           <span className="site-header__name">
             <span className="site-header__ar">{brand.nameAr}</span>
             <span className="site-header__en">{brand.nameEn}</span>
