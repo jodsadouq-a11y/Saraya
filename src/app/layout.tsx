@@ -47,7 +47,7 @@ const jsonLd = {
   url: site.url,
   telephone: contact.phoneHref.replace('tel:', ''),
   email: contact.email,
-  logo: `${site.url}/icon.svg`,
+  logo: `${site.url}/brand/logo.png`,
   image: `${site.url}/og.jpg`,
   address: {
     '@type': 'PostalAddress',

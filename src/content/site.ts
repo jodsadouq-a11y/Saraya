@@ -75,11 +75,13 @@ export const brand = {
   cityEn: 'Tulkarm',
   country: 'فلسطين',
   countryEn: 'Palestine',
+  /** Group name shown on the official Facebook cover. */
+  group: 'مجموعة قاعات سرايا شيرين',
   /**
-   * Official logo. Drop the supplied file at /public/brand/logo.png (or .svg / .webp)
-   * and set the path here. While `null`, a stand-in emblem is drawn instead.
+   * Official logo (cropped from the Facebook profile picture). Replace with the
+   * original high-resolution file when available. `null` draws a stand-in emblem.
    */
-  logoSrc: null as string | null,
+  logoSrc: '/brand/logo.png' as string | null,
   campaign: 'لكل حكاية حب… سرايا تليق بها',
   tagline: 'هناك ليالٍ تمرّ… وهناك ليلة تبقى في الذاكرة إلى الأبد.',
 } as const;
@@ -92,6 +94,8 @@ export const contact = {
   email: 'info@sarayashereen.com',
   website: 'https://www.sarayashereen.com/',
   facebook: 'https://www.facebook.com/share/16K7fgr2PgM/',
+  /** As shown on the official Facebook page (October 2026). Update as they change. */
+  facebookStats: { followers: '149 ألف', recommend: '86%', reviews: '1,716' },
   /**
    * TODO(verify): paste the official Google Maps link of the venue here.
    * The directions button stays hidden until this is set.
@@ -117,6 +121,11 @@ export const site = {
   ],
   /** Show the small "illustration" badge on placeholder media. Keep true until real photos are in. */
   showPlaceholderBadges: true,
+  /**
+   * Background music. Browsers only allow sound after the visitor's first tap,
+   * click or key press, so playback starts then (or immediately where allowed).
+   */
+  music: { src: '/audio/saraya-theme.mp3', volume: 0.45 } as { src: string; volume: number } | null,
 } as const;
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
@@ -140,68 +149,99 @@ export const nav = [
 export const eventTypes = ['حفل زفاف', 'مناسبة أخرى'] as const;
 
 // ─── Media library ───────────────────────────────────────────────────────────
-// Replace `src` (and width/height) with genuine Saraya Shereen photographs.
+// Genuine Saraya Shereen photographs (resized by scripts/optimize-photos.py).
+// `art` stays as the fallback illustration if a photo is ever removed.
 
 const m = (item: MediaItem): MediaItem => item;
 
-export const media = {
-  heroHall: m({ id: 'hero-hall', art: 'hall', alt: 'قاعة الأفراح في سرايا شيرين بإضاءتها الدافئة', shape: 'wide' }),
-  storyHall: m({ id: 'story-hall', art: 'hall', alt: 'منظر بانورامي لقاعة الأفراح', shape: 'wide' }),
-  hallDark: m({ id: 'hall-dark', art: 'hall-dark', alt: 'القاعة قبل أن تُضاء', shape: 'wide' }),
-  hallLit: m({ id: 'hall-lit', art: 'hall', alt: 'القاعة مضاءة وجاهزة للاحتفال', shape: 'wide' }),
-  stage: m({ id: 'stage', art: 'stage', alt: 'منصة العروسين المزيّنة', shape: 'wide' }),
-  pause: m({ id: 'pause', art: 'chandelier', alt: 'ثريا مضيئة في القاعة', shape: 'tall' }),
+/** Builds a responsive photo entry from /public/media/photos/<name>-{960,1920}.webp. */
+const photo = (name: string, w: number, h: number, item: Omit<MediaItem, 'src' | 'srcSet' | 'width' | 'height'>): MediaItem => ({
+  ...item,
+  src: `/media/photos/${name}-1920.webp`,
+  srcSet: `/media/photos/${name}-960.webp 960w, /media/photos/${name}-1920.webp 1920w`,
+  width: 1920,
+  height: Math.round((1920 * h) / w),
+});
+
+export const photos = {
+  hallWarm: photo('hall-warm', 4, 3, { id: 'hall-warm', art: 'hall', alt: 'القاعة الداخلية في سرايا شيرين بثريّاتها الذهبية وستائر الأضواء', caption: 'ضوء يصنع الأجواء', shape: 'square' }),
+  hallBlue: photo('hall-blue', 4, 3, { id: 'hall-blue', art: 'hall-dark', alt: 'القاعة بإضاءة زرقاء هادئة وممرّ تحفّه الورود البيضاء', caption: 'قبل أن تبدأ الليلة', shape: 'square' }),
+  hallTatreez: photo('hall-tatreez', 4, 3, { id: 'hall-tatreez', art: 'hall', alt: 'ممرّ بسجّاد مطرّز بالتطريز الفلسطيني تحت أقواس من الضوء وورود حمراء', caption: 'ممرّ الحكاية', shape: 'square', focal: '50% 55%' }),
+  stageFlowers: photo('stage-flowers', 4, 3, { id: 'stage-flowers', art: 'stage', alt: 'منصة العروسين على درج رخامي تحيط بها جدران من الورود البيضاء', caption: 'منصّة الحكاية', shape: 'wide' }),
+  stageStars: photo('stage-stars', 4, 3, { id: 'stage-stars', art: 'stage', alt: 'منصة خارجية بخلفية سماء مرصّعة بالنجوم وستائر بيضاء', caption: 'تحت سماء من نجوم', shape: 'tall', focal: '50% 60%' }),
+  gardenArch: photo('garden-arch', 16, 9, { id: 'garden-arch', art: 'entrance', alt: 'أقواس ورود وردية وبيضاء تقود إلى درج مضيء في الحديقة', caption: 'أول خطوة', shape: 'tall', focal: '50% 50%' }),
+  gardenTables: photo('garden-tables', 4, 3, { id: 'garden-tables', art: 'table', alt: 'طاولات الحديقة الخارجية بالورود والأضواء المعلّقة عند الغروب', caption: 'سهرة في الحديقة', shape: 'wide' }),
 };
 
-/** Chapter 06 sequence + editorial gallery. */
+export const media = {
+  heroHall: photos.hallWarm,
+  /** Revealed behind the curtains (chapter 02). */
+  hallLit: photos.stageStars,
+  /** Entering the hall (chapter 03). */
+  storyHall: photos.hallTatreez,
+  stage: photos.stageFlowers,
+  pause: photos.gardenTables,
+};
+
+/** Editorial gallery. */
 export const gallery: MediaItem[] = [
-  { id: 'g1', art: 'stage', alt: 'منصة العروسين', caption: 'منصة الحكاية', shape: 'wide' },
-  { id: 'g2', art: 'floral', alt: 'تنسيق زهور', caption: 'زهور تكمّل المشهد', shape: 'tall' },
-  { id: 'g3', art: 'table', alt: 'طاولة ضيوف مجهّزة', caption: 'تفاصيل الطاولة', shape: 'tall' },
-  { id: 'g4', art: 'chandelier', alt: 'ثريا القاعة', caption: 'ضوء يصنع الأجواء', shape: 'square' },
-  { id: 'g5', art: 'hall', alt: 'القاعة بكامل إضاءتها', caption: 'مساحة تحتضن فرحتكم', shape: 'wide' },
-  { id: 'g6', art: 'entrance', alt: 'مدخل القاعة', caption: 'أول خطوة', shape: 'tall' },
-  { id: 'g7', art: 'floral', seed: 2, alt: 'تفاصيل زهرية قرب المنصة', caption: 'لمسات ناعمة', shape: 'square' },
-  { id: 'g8', art: 'table', seed: 2, alt: 'إعداد طاولة احتفالية', caption: 'لكل ضيف مكانه', shape: 'square' },
+  photos.stageFlowers,
+  photos.gardenArch,
+  photos.hallWarm,
+  photos.hallTatreez,
+  photos.gardenTables,
+  photos.stageStars,
+  photos.hallBlue,
 ];
 
-/** Chapter 06 — horizontal detail sequence (stages, florals, tables, chandeliers…). */
+/** Chapter 06 — horizontal detail sequence. */
 export const storyDetails: MediaItem[] = [
-  { id: 'd1', art: 'stage', alt: 'منصة العروسين بإضاءتها', caption: 'المنصّة', shape: 'wide' },
-  { id: 'd2', art: 'floral', seed: 2, alt: 'تنسيق زهور ناعم', caption: 'الزهور', shape: 'tall' },
-  { id: 'd3', art: 'table', alt: 'طاولة ضيوف مجهّزة بالشموع', caption: 'الطاولات', shape: 'tall' },
-  { id: 'd4', art: 'chandelier', alt: 'ثريا ذهبية مضيئة', caption: 'الثريات', shape: 'tall' },
-  { id: 'd5', art: 'hall', alt: 'القاعة بكامل تجهيزها', caption: 'المساحة', shape: 'wide' },
-  { id: 'd6', art: 'entrance', alt: 'مدخل مزيّن بالزهور', caption: 'المدخل', shape: 'tall' },
+  { ...photos.stageFlowers, caption: 'المنصّة', shape: 'wide' },
+  { ...photos.gardenArch, caption: 'الحديقة', shape: 'tall' },
+  { ...photos.hallWarm, caption: 'الثريّات', shape: 'tall' },
+  { ...photos.hallTatreez, caption: 'الممرّ', shape: 'wide' },
+  { ...photos.stageStars, caption: 'السماء', shape: 'tall' },
+  { ...photos.gardenTables, caption: 'الطاولات', shape: 'tall' },
 ];
 
 /** Chapter 04 — frames crossfaded with scroll (first = quiet hall, last = celebration). */
-export const transformationFrames: MediaItem[] = [media.hallDark, media.hallLit];
+export const transformationFrames: MediaItem[] = [photos.hallBlue, photos.hallWarm];
 
 // ─── Halls ───────────────────────────────────────────────────────────────────
 /**
- * TODO(verify): the venue's public page refers to wedding halls ("صالات أفراح").
- * Add one entry per official hall with its real name, published capacity and
- * confirmed features. With more than one entry, a hall selector appears.
+ * Two spaces appear in the venue's photographs: an indoor hall and an outdoor
+ * garden. TODO(verify): official names and published capacities. Features below
+ * are only what is visible in the photographs.
  */
 export const halls: Hall[] = [
   {
-    id: 'main',
-    name: 'صالات الأفراح',
-    nameLatin: 'The Wedding Halls',
+    id: 'hall',
+    name: 'القاعة الداخلية',
+    nameLatin: 'The Grand Hall',
     description:
-      'مساحة صُمّمت لتحتضن فرحتكم؛ ضوء دافئ، تفاصيل أنيقة، ومكان يليق بأن تبدأ فيه حكايتكم. زورونا لتشعروا بالأجواء عن قرب قبل أن تقرّروا.',
+      'قاعة بيضاء تتلألأ فيها الثريّات الذهبية وستائر الأضواء فوق أرضية لامعة، بدرج مزدوج يطلّ من شرفة علوية، ومنصّة للعروسين على درج رخامي تحيط بها الورود.',
     capacity: undefined,
-    features: [],
-    cover: media.storyHall,
-    gallery: [gallery[0], gallery[3], gallery[2], gallery[5]],
+    features: ['ثريّات ذهبية', 'ستائر أضواء', 'درج مزدوج وشرفة علوية', 'منصّة عروسين رخامية', 'إضاءة مسرحية'],
+    cover: photos.hallWarm,
+    gallery: [photos.hallTatreez, photos.hallBlue, photos.stageFlowers, photos.hallWarm],
+  },
+  {
+    id: 'garden',
+    name: 'الحديقة الخارجية',
+    nameLatin: 'The Garden',
+    description:
+      'سهرة في الهواء الطلق تحت أشجار الصفصاف والأضواء المعلّقة، على عشب أخضر وطاولات تزيّنها الورود، مع درج مضيء ومنصّة أمام واجهة السرايا.',
+    capacity: undefined,
+    features: ['أضواء معلّقة', 'أقواس ورود', 'درج مضيء', 'منصّة خارجية'],
+    cover: photos.gardenTables,
+    gallery: [photos.gardenArch, photos.stageStars, photos.gardenTables],
   },
 ];
 
 // ─── Services ────────────────────────────────────────────────────────────────
 /**
- * Based on the venue's public page description ("صالات أفراح وتأجيرها",
- * "مطعم وكافتيريا"). TODO(verify) details with the business before launch.
+ * From the venue's Facebook page description: "مطعم وكافتيريا وصالات افراح
+ * وتاجيرها وتقديم الخدمات الفندقية اللازمة والشاملة".
  */
 export const services: Service[] = [
   {
@@ -209,21 +249,21 @@ export const services: Service[] = [
     kicker: 'الأفراح',
     title: 'فرحتكم تستحق عناية بكل تفصيلة.',
     body: 'صالات أفراح تُفتح لليلتكم الكبيرة، بأجواء تُهيّأ لتليق بالمناسبة وبمن تحبّون.',
-    media: gallery[0],
+    media: photos.stageFlowers,
   },
   {
     id: 'restaurant',
     kicker: 'المطعم والكافتيريا',
     title: 'أجواء تُصنع لتناسب مناسبتكم.',
-    body: 'في سرايا شيرين مطعم وكافتيريا. استفسروا من فريقنا عن التفاصيل المتاحة لمناسبتكم.',
-    media: gallery[2],
+    body: 'في سرايا شيرين مطعم وكافتيريا وخدمات ضيافة متكاملة. استفسروا من فريقنا عن التفاصيل المتاحة لمناسبتكم.',
+    media: photos.gardenTables,
   },
   {
     id: 'visit',
     kicker: 'زيارة شخصية',
     title: 'من التخطيط الأول… حتى اللحظة التي يبدأ فيها الاحتفال.',
     body: 'رتّبوا زيارة للمكان، وتحدّثوا مع فريقنا عن ليلتكم وما تتخيّلونه لها.',
-    media: gallery[5],
+    media: photos.gardenArch,
   },
 ];
 

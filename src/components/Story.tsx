@@ -160,11 +160,10 @@ export default function Story() {
       /* 03 — Enter the palace */
       scenes.push(() => {
         const q = gsap.utils.selector('#ch-enter');
-        draw(q('.ch3__lines path'));
         const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: st('ch-enter') });
         tl.fromTo(q('.ch3__cam'), { scale: 1 }, { scale: desktop ? 1.5 : 1.35, duration: 10 }, 0)
-          .to(q('.ch3__lines path'), { strokeDashoffset: 0, stagger: 0.25, duration: 2.4, ease: 'power2.inOut' }, 0.6)
-          .to(q('.ch3__lines'), { opacity: 0, duration: 1.4 }, 5.4)
+          .fromTo(q('.ch3__frame'), { clipPath: 'inset(50% 50% 50% 50%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 2.4, ease: 'power2.inOut' }, 0.6)
+          .to(q('.ch3__frame'), { opacity: 0, duration: 1.4 }, 5.4)
           .from(q('.ch3__label'), { opacity: 0, y: 14, stagger: 0.7, duration: 0.8, ease: 'power2.out' }, 2.2)
           .to(q('.ch3__label'), { opacity: 0, duration: 0.8 }, 6.2)
           .from(q('.ch3__copy > *'), { opacity: 0, y: 30, stagger: 0.3, duration: 1.2, ease: 'power2.out' }, 6.6)
@@ -380,20 +379,14 @@ export default function Story() {
         <div className="chapter__stage">
           <div className="ch3__cam">
             <Media item={media.storyHall} sizes="100vw" />
-            <svg className="ch3__lines" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <path d="M600 560 L600 330 Q800 160 1000 330 L1000 560" />
-              <path d="M560 600 L560 300 Q800 110 1040 300 L1040 600" />
-              <path d="M0 900 L560 560" />
-              <path d="M1600 900 L1040 560" />
-              <path d="M0 0 L560 230" />
-              <path d="M1600 0 L1040 230" />
-            </svg>
+            {/* Label positions (desktop --x/--y, phone --mx/--my) are tuned to the chapter photo. */}
             <ul className="ch3__labels">
-              <li className="ch3__label" style={{ insetInlineStart: '50%', top: '18%' }}>إضاءة تصنع الأجواء</li>
-              <li className="ch3__label" style={{ insetInlineStart: '64%', top: '64%' }}>تفاصيل تكمّل الجمال</li>
-              <li className="ch3__label" style={{ insetInlineStart: '36%', top: '44%' }}>مساحة تحتضن فرحتكم</li>
+              <li className="ch3__label" style={{ ['--x' as string]: '24%', ['--y' as string]: '24%', ['--mx' as string]: '50%', ['--my' as string]: '24%' }}>إضاءة تصنع الأجواء</li>
+              <li className="ch3__label" style={{ ['--x' as string]: '30%', ['--y' as string]: '58%', ['--mx' as string]: '32%', ['--my' as string]: '52%' }}>تفاصيل تكمّل الجمال</li>
+              <li className="ch3__label" style={{ ['--x' as string]: '80%', ['--y' as string]: '66%', ['--mx' as string]: '66%', ['--my' as string]: '66%' }}>مساحة تحتضن فرحتكم</li>
             </ul>
           </div>
+          <div className="ch3__frame" aria-hidden="true" />
           <div className="ch3__vignette" aria-hidden="true" />
           <div className="chapter__copy ch3__copy">
             <ChapterHead n={2} label="الفصل الثالث" />

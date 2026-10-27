@@ -1,4 +1,4 @@
-import { brand } from '@/content/site';
+import { brand, contact } from '@/content/site';
 import Emblem from './Emblem';
 
 export default function About() {
@@ -18,8 +18,9 @@ export default function About() {
           <h2 id="about-title" className="section-title display">{brand.campaign}</h2>
           <p className="about__lead">{brand.tagline}</p>
           <p>
-            في قلب {brand.city}، تفتح سرايا شيرين أبوابها لليالي الفرح. مكانٌ صُمّم ليحتضن مناسباتكم بأجواء دافئة وأنيقة،
-            ويمنح كل حكاية المساحة التي تستحقها لتُروى.
+            في قلب {brand.city}، تفتح {brand.group} أبوابها لليالي الفرح: قاعة داخلية تتلألأ بالثريّات، وحديقة خارجية تحت
+            الأضواء المعلّقة، إلى جانب المطعم والكافتيريا وخدمات الضيافة. مكانٌ يحتضن مناسباتكم بأجواء دافئة وأنيقة، ويمنح
+            كل حكاية المساحة التي تستحقها لتُروى.
           </p>
           <ul className="about__facts">
             <li>
@@ -28,13 +29,17 @@ export default function About() {
             </li>
             <li>
               <span>القاعات</span>
-              صالات أفراح ومناسبات
+              قاعة داخلية وحديقة خارجية
             </li>
             <li>
               <span>الضيافة</span>
               مطعم وكافتيريا
             </li>
           </ul>
+          <a className="about__social" href={contact.facebook} target="_blank" rel="noopener noreferrer">
+            <strong>{contact.facebookStats.recommend}</strong> يوصون بنا من {contact.facebookStats.reviews} مراجعة ·{' '}
+            <strong>{contact.facebookStats.followers}</strong> متابع على فيسبوك
+          </a>
         </div>
       </div>
     </section>
