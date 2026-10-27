@@ -1368,15 +1368,19 @@ address {
   transform-origin: 50% 55%;
   will-change: transform;
 }
-.ch3__lines {
+.ch3__frame {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  fill: none;
-  stroke: var(--champagne);
-  stroke-width: 1.4;
-  filter: drop-shadow(0 0 5px rgba(232, 195, 111, 0.9));
+  inset: clamp(18px, 5vmin, 56px);
+  inset-block-start: calc(var(--header-h) + 12px);
+  border: 1px solid rgba(246, 228, 178, 0.75);
+  box-shadow: 0 0 12px rgba(232, 195, 111, 0.5), inset 0 0 12px rgba(232, 195, 111, 0.35);
+  pointer-events: none;
+}
+.motion-ok .ch3__frame {
+  opacity: 1;
+}
+html:not(.motion-ok) .ch3__frame {
+  display: none;
 }
 .ch3__labels {
   position: absolute;
@@ -1384,7 +1388,9 @@ address {
 }
 .ch3__label {
   position: absolute;
-  transform: translate(50%, -50%);
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1405,6 +1411,12 @@ address {
   border-radius: 50%;
   background: var(--gold);
   box-shadow: 0 0 0 4px rgba(232, 195, 111, 0.25), 0 0 14px var(--gold);
+}
+@media (max-width: 899.98px) {
+  .ch3__label {
+    left: var(--mx);
+    top: var(--my);
+  }
 }
 .motion-ok .ch3__label {
   /* scale-compensated by cam; kept small */
@@ -2258,6 +2270,24 @@ html:not(.motion-ok) .ch5__spark {
   letter-spacing: 0.06em;
   color: var(--gold-deep);
 }
+.about__social {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 10px 18px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  border: 1px solid rgba(169, 129, 58, 0.4);
+  border-radius: 99px;
+  transition: border-color 0.3s, color 0.3s;
+}
+.about__social strong {
+  color: var(--purple);
+  font-weight: 500;
+}
+.about__social:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
 @media (max-width: 899.98px) {
   .about__grid {
     grid-template-columns: 1fr;
@@ -2697,6 +2727,119 @@ html:not(.motion-ok) .ch5__spark {
 }
 html.menu-open .fab-wa,
 html.lightbox-open .fab-wa {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── Music toggle ──────────────────────────────────────────────────────── */
+.music-toggle {
+  position: fixed;
+  z-index: 90;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--champagne);
+  background: rgba(40, 13, 46, 0.78);
+  border: 1px solid rgba(232, 195, 111, 0.55);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.music-toggle:hover {
+  border-color: var(--gold);
+  background: rgba(80, 20, 86, 0.9);
+}
+.music-toggle__bars {
+  display: none;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+}
+.music-toggle__bars i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--gold);
+  transform-origin: bottom;
+  animation: music-bar 1s ease-in-out infinite alternate;
+}
+.music-toggle__bars i:nth-child(2) {
+  animation-delay: -0.4s;
+}
+.music-toggle__bars i:nth-child(3) {
+  animation-delay: -0.7s;
+}
+.music-toggle__bars i:nth-child(4) {
+  animation-delay: -0.2s;
+}
+@keyframes music-bar {
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.music-toggle__off {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.music-toggle.is-playing .music-toggle__bars {
+  display: flex;
+}
+.music-toggle.is-playing .music-toggle__off {
+  display: none;
+}
+.music-toggle__hint {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  color: var(--ivory);
+  background: rgba(40, 13, 46, 0.9);
+  border: 1px solid rgba(232, 195, 111, 0.4);
+  border-radius: 99px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.music-toggle.is-waiting .music-toggle__hint {
+  opacity: 1;
+  animation: hint-out 0.6s 7s forwards;
+}
+.music-toggle.is-waiting::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  animation: music-pulse 2s ease-out infinite;
+}
+@keyframes music-pulse {
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+@keyframes hint-out {
+  to {
+    opacity: 0;
+  }
+}
+html.lightbox-open .music-toggle {
   opacity: 0;
   pointer-events: none;
 }

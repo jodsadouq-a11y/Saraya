@@ -12,6 +12,7 @@ import Pause from '@/components/Pause';
 import Booking from '@/components/Booking';
 import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+import BackgroundMusic from '@/components/BackgroundMusic';
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <BackgroundMusic />
     </>
   );
 }

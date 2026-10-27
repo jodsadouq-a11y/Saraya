@@ -18,43 +18,31 @@ npm run typecheck
 
 ---
 
-## ⚠️ Before launch: replace placeholders with verified content
+## Content status
 
-The official website and Facebook page could not be opened from the build environment, so **nothing has been invented**. Everything that needs confirming lives in one file: **`src/content/site.ts`**. Look for `TODO(verify)` there.
+All business content lives in **`src/content/site.ts`**. Items still marked `TODO(verify)` need the venue's confirmation.
 
-| What | Where | Current state |
+| What | Where | State |
 | --- | --- | --- |
-| **Official logo** | `brand.logoSrc` → put the file in `public/brand/` | A stand-in emblem is drawn until the real logo is added |
-| **Venue photos** | `media`, `gallery`, `storyDetails`, `halls[].cover/gallery` → set `src`, `width`, `height` (and optionally `srcSet`, `focal`) | Gold line-art **illustrations**, labelled «رسم توضيحي مؤقت» on the page |
-| **Hall names, capacities, features** | `halls` | One generic entry, «صالات الأفراح», with no capacity or features. Add one entry per official hall; a hall selector appears automatically when there are two or more |
-| **Occasion types (form)** | `eventTypes` | «حفل زفاف» and «مناسبة أخرى». Add others only once the venue confirms them |
-| **Services** | `services` | Based on the public page description (wedding halls, restaurant and cafeteria) |
-| **Map / address** | `contact.mapUrl`, `contact.address` | Hidden until set. The footer then shows a «الاتجاهات على الخريطة» link |
-| **Phone / WhatsApp / email** | `contact` | `0599 251 251` · `+972599251251` · `info@sarayashereen.com`, as supplied. Verify before going live |
+| **Logo** | `public/brand/logo.png` (`brand.logoSrc`) | Cropped from the Facebook profile picture (512px). Replace it with the original high-resolution file when available |
+| **Venue photos** | `public/media/photos/` (`photos` in `site.ts`) | 7 genuine photos as responsive WebP (960w and 1920w), with metadata stripped. Add more with `python3 scripts/optimize-photos.py <photo.jpg> <name>` |
+| **Halls** | `halls` | «القاعة الداخلية» and «الحديقة الخارجية» are descriptive names taken from the photos. Features list only what the photos show. Official names and capacities are still `TODO(verify)` |
+| **Facebook facts** | `contact.facebookStats`, `brand.group` | 149 ألف followers, 86% recommend from 1,716 reviews, and «مجموعة قاعات سرايا شيرين», as shown on the page in October 2026. Update them as they change |
+| **Services** | `services` | From the Facebook description: wedding halls and rental, restaurant and cafeteria, hospitality services |
+| **Occasion types (form)** | `eventTypes` | «حفل زفاف» and «مناسبة أخرى». Add others once the venue confirms them |
+| **Map / address** | `contact.mapUrl`, `contact.address` | Hidden until set |
+| **Phone / WhatsApp / email** | `contact` | `0599 251 251` (shown on the Facebook page) · `+972599251251` · `info@sarayashereen.com` |
 
-When all real photos are in, set `site.showPlaceholderBadges = false`.
+The illustrated placeholders in `public/media/placeholders/` remain as fallbacks. Any media item without `src` uses them.
 
-### Adding real photos
+## Background music
 
-1. Export each photo as WebP, about 1920px wide for wide scenes and 1200px for portraits. A second size at half the width is recommended for phones.
-2. Put the files in `public/media/`.
-3. Point the media item at them:
+`public/audio/saraya-theme.mp3` (128 kbps, about 1.7 MB) plays on a loop. The player is `src/components/BackgroundMusic.tsx` and the setting is `site.music`; set it to `null` to remove the music.
 
-```ts
-heroHall: m({
-  id: 'hero-hall', art: 'hall', shape: 'wide',
-  src: '/media/hall-1920.webp',
-  srcSet: '/media/hall-960.webp 960w, /media/hall-1920.webp 1920w',
-  width: 1920, height: 1080,
-  focal: '50% 45%',
-  alt: 'قاعة الأفراح في سرايا شيرين بإضاءتها الدافئة',
-}),
-```
-
-- Chapter 04 («التحوّل») crossfades through `transformationFrames`, from the quiet hall to the celebration. Two or more real photos of the same space work best.
-- The labels in Chapter 03 are positioned in `Story.tsx` (`.ch3__label` inline styles). Adjust them to the real photo.
-
----
+- Every modern browser (Chrome, Safari, Firefox, iPhone and Android) blocks sound until the visitor interacts with the page. The music therefore starts immediately where the browser allows it, and otherwise on the visitor's **first tap, click or key press anywhere**. Scrolling alone does not count as a gesture in browsers.
+- A gold button in the bottom corner turns the music on and off. While playback is waiting for a gesture, the button shows the hint «اضغطوا لتشغيل الموسيقى».
+- The visitor's on/off choice is remembered. Playback pauses while the tab is hidden and resumes on return.
+- Make sure you hold the rights to use the song publicly on the website.
 
 ## How the experience is built
 
