@@ -1,0 +1,42 @@
+import { brand } from '@/content/site';
+import Emblem from './Emblem';
+
+export default function About() {
+  return (
+    <section id="about" className="section section--ivory about" aria-labelledby="about-title">
+      <div className="container about__grid">
+        <div className="about__mark" data-reveal aria-hidden="true">
+          <svg className="about__orbit" viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="190" />
+            <circle cx="200" cy="200" r="160" strokeDasharray="2 8" />
+            <path d="M200 10 L200 40 M200 360 L200 390 M10 200 L40 200 M360 200 L390 200" />
+          </svg>
+          <Emblem size={200} />
+        </div>
+        <div className="about__body" data-reveal>
+          <p className="eyebrow">عن سرايا شيرين</p>
+          <h2 id="about-title" className="section-title display">{brand.campaign}</h2>
+          <p className="about__lead">{brand.tagline}</p>
+          <p>
+            في قلب {brand.city}، تفتح سرايا شيرين أبوابها لليالي الفرح. مكانٌ صُمّم ليحتضن مناسباتكم بأجواء دافئة وأنيقة،
+            ويمنح كل حكاية المساحة التي تستحقها لتُروى.
+          </p>
+          <ul className="about__facts">
+            <li>
+              <span>المكان</span>
+              {brand.city}، {brand.country}
+            </li>
+            <li>
+              <span>القاعات</span>
+              صالات أفراح ومناسبات
+            </li>
+            <li>
+              <span>الضيافة</span>
+              مطعم وكافتيريا
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
