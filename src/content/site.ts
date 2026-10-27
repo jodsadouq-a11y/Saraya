@@ -100,9 +100,9 @@ export const contact = {
    * TODO(verify): paste the official Google Maps link of the venue here.
    * The directions button stays hidden until this is set.
    */
-  mapUrl: null as string | null,
+  mapUrl: 'https://maps.google.com/?q=سرايا+شيرين+طولكرم' as string | null,
   /** TODO(verify): street address as published by the venue. */
-  address: null as string | null,
+  address: 'طولكرم، فلسطين' as string | null,
 } as const;
 
 export const site = {

@@ -1,0 +1,27 @@
+{
+  "name": "سرايا شيرين — SARAYA SHEREEN",
+  "short_name": "سرايا شيرين",
+  "description": "سرايا شيرين في طولكرم — قاعات أفراح ومناسبات تحتضن ليلتكم بأجواء ملكية.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#120516",
+  "theme_color": "#280D2E",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar-PS",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}

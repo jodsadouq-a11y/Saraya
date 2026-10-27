@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   description: site.description,
   keywords: [...site.keywords],
   applicationName: brand.nameAr,
+  manifest: '/manifest.webmanifest',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <link rel="preload" href="/fonts/aref-ruqaa-arabic-400-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/media/photos/hall-wide-1920.webp" as="image" type="image/webp" fetchPriority="high" />
       </head>
       <body>
         <a className="skip-link" href="#main">

@@ -40,6 +40,19 @@ export default function About() {
             <strong>{contact.facebookStats.recommend}</strong> يوصون بنا من {contact.facebookStats.reviews} مراجعة ·{' '}
             <strong>{contact.facebookStats.followers}</strong> متابع على فيسبوك
           </a>
+          {contact.mapUrl && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <a
+                href={contact.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--gold"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <span>📍 موقعنا على خرائط Google</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>
